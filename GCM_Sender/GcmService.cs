@@ -11,17 +11,30 @@ using Newtonsoft.Json;
 
 namespace GCM_Sender
 {
+    /// <summary>
+    /// http://developer.android.com/google/gcm/http.html
+    /// </summary>
     public class GcmService
     {
-        string _apiKey = "AIzaSyD29Bu6WP0Pv8mcTXdrXHzWN1qmsefwMDo";
+        string _apiKey = "AIzaSyD29Bu6WP0Pv8mcTXdrXHzWN1qmsefwMDo"; // this will need to be changed
         public GcmService(string apiKey)
         {
             _apiKey = apiKey;
         }
 
-        internal Response JobAssigned(Request request)
+        public Response SendRequest(Request request)
         {
-            return SendGCMNotification(_apiKey, request);
+            Response response = null;
+            string responseString = SendGCMNotification(_apiKey, request);
+            try
+            {
+                response = responseString;
+            }
+            catch
+            {
+                throw new Exception(responseString);
+            }
+            return response;
         }
 
         /// <summary>
@@ -37,6 +50,7 @@ namespace GCM_Sender
 
             //
             //  MESSAGE CONTENT
+            string data = postData;
             byte[] byteArray = Encoding.UTF8.GetBytes(postData);
 
             //

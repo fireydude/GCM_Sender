@@ -14,6 +14,9 @@ namespace GCM_Sender
 
         public static implicit operator string(Request r)
         {
+            if (r.registration_ids.Length == 0)
+                throw new Exception("At least one registration_ids is required");
+
             return (string)JsonConvert.SerializeObject(r);
         }
         public static implicit operator Request(string r)
